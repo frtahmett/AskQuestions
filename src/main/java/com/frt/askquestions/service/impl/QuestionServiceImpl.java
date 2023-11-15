@@ -23,9 +23,8 @@ public class QuestionServiceImpl implements QuestionService {
 
     public QuestionDto askQuestion(QuestionDto questionDto) {
         Question question = DTOConverter.convertQuestionDTOToEntity(questionDto);
-
-        Question savedQuestion = questionRepository.save(question);
         question.setStatus(Status.ASKED);
+        Question savedQuestion = questionRepository.save(question);
 
         return DTOConverter.convertQuestionEntityToDto(savedQuestion);
 
@@ -56,10 +55,16 @@ public class QuestionServiceImpl implements QuestionService {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Question isn't exists with given id : " + questionId));
+        if(question.getStatus() == Status.ASKED){
+            question.setAnsweringTeacherName(answeredQuestion.getAnsweringTeacherName());
+            question.setAnsweringTeacherSurname(answeredQuestion.getAnsweringTeacherSurname());
+            question.setStatus(Status.SOLVED);
+        }
+        else {
+            throw new ResourceNotFoundException("Status isn't correct with given question : " + questionId);
+        }
 
-        question.setAnsweringTeacherName(answeredQuestion.getAnsweringTeacherName());
-        question.setAnsweringTeacherSurname(answeredQuestion.getAnsweringTeacherSurname());
-        question.setStatus(Status.SOLVED);
+
 
         Question answeredQuestionObj = questionRepository.save(question);
 
