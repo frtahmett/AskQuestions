@@ -36,7 +36,7 @@ public class QuestionServiceImpl implements QuestionService {
 
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Question isn't exist with given id : " + questionId));
+                        new ResourceNotFoundException("Question isn't exists with given id : " + questionId));
 
         return DTOConverter.convertQuestionEntityToDto(question);
     }
@@ -48,6 +48,23 @@ public class QuestionServiceImpl implements QuestionService {
 
         return questions.stream().map(DTOConverter::convertQuestionEntityToDto)
               .collect(Collectors.toList());
+    }
+
+    @Override
+    public QuestionDto answerQuestion(Long questionId, QuestionDto answeredQuestion) {
+
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Question isn't exists with given id : " + questionId));
+
+        question.setAnsweringTeacherName(answeredQuestion.getAnsweringTeacherName());
+        question.setAnsweringTeacherSurname(answeredQuestion.getAnsweringTeacherSurname());
+        question.setStatus(Status.SOLVED);
+
+        Question answeredQuestionObj = questionRepository.save(question);
+
+
+        return DTOConverter.convertQuestionEntityToDto(answeredQuestionObj);
     }
 
 

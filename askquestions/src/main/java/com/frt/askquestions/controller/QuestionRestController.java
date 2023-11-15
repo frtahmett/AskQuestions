@@ -16,7 +16,7 @@ public class QuestionRestController {
 
     private QuestionService questionService;
 
-    // Build Add Question REST API
+    // Build Ask Question REST API
     @PostMapping
     public ResponseEntity<QuestionDto> askQuestion(@RequestBody QuestionDto questionDto) {
 
@@ -42,5 +42,14 @@ public class QuestionRestController {
         List<QuestionDto> questionDtoList = questionService.listQuestions();
 
         return ResponseEntity.ok(questionDtoList);
+    }
+
+    // Build Answer Question REST API
+    @PutMapping("{id}")
+    public ResponseEntity<QuestionDto> answerQuestion(@PathVariable("id") Long questionId, @RequestBody QuestionDto answeredQuestion) {
+
+        QuestionDto questionDto = questionService.answerQuestion(questionId, answeredQuestion);
+
+        return ResponseEntity.ok(questionDto);
     }
 }

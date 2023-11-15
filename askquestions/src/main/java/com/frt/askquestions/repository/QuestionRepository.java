@@ -11,6 +11,6 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     // List<Question> saveQuestion();
 
-    //List<Question> getQuestion(Long id);
+    // List<Question> getQuestion(Long id);
 
 }
