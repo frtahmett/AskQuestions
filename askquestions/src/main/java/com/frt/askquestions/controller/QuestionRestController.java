@@ -1,7 +1,6 @@
 package com.frt.askquestions.controller;
 
 import com.frt.askquestions.dto.QuestionDto;
-import com.frt.askquestions.entity.Question;
 import com.frt.askquestions.service.QuestionService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +16,7 @@ public class QuestionRestController {
 
     private QuestionService questionService;
 
+    // Build Add Question REST API
     @PostMapping
     public ResponseEntity<QuestionDto> askQuestion(@RequestBody QuestionDto questionDto) {
 
@@ -26,16 +26,21 @@ public class QuestionRestController {
 
     }
 
+    // Build Get Question REST API
     @GetMapping("{id}")
-    public ResponseEntity<QuestionDto> listQuestion(@PathVariable("id") Long questionId) {
+    public ResponseEntity<QuestionDto> listQuestionDetails(@PathVariable("id") Long questionId) {
 
-        QuestionDto getQuestion = questionService.listQuestionDetails(questionId);
+        QuestionDto questionDto = questionService.listQuestionDetails(questionId);
 
-        return new ResponseEntity<>(getQuestion, HttpStatus.OK);
+        return ResponseEntity.ok(questionDto);
     }
 
+    // Build Get All Questions REST API
     @GetMapping
-    public List<Question> listQuestions() {
-        return questionService.listQuestions();
+    public ResponseEntity<List<QuestionDto>> listQuestions() {
+
+        List<QuestionDto> questionDtoList = questionService.listQuestions();
+
+        return ResponseEntity.ok(questionDtoList);
     }
 }

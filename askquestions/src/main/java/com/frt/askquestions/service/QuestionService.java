@@ -1,15 +1,15 @@
 package com.frt.askquestions.service;
 
 import com.frt.askquestions.dto.QuestionDto;
-import com.frt.askquestions.entity.Question;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface QuestionService {
 
     QuestionDto askQuestion(QuestionDto questionDto);
 
-    QuestionDto listQuestionDetails(Long id);
+    QuestionDto listQuestionDetails(Long questionId);
 
-    List<Question> listQuestions();
+    List<QuestionDto> listQuestions();
 }

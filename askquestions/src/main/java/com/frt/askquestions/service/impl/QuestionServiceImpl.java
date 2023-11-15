@@ -1,14 +1,17 @@
 package com.frt.askquestions.service.impl;
 
+import com.frt.askquestions.Exception.ResourceNotFoundException;
+import com.frt.askquestions.dto.DTOConverter;
 import com.frt.askquestions.dto.QuestionDto;
 import com.frt.askquestions.entity.Question;
+import com.frt.askquestions.enums.Status;
 import com.frt.askquestions.repository.QuestionRepository;
 import com.frt.askquestions.service.QuestionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -18,52 +21,33 @@ public class QuestionServiceImpl implements QuestionService {
     private QuestionRepository questionRepository;
 
 
-    @Override
     public QuestionDto askQuestion(QuestionDto questionDto) {
+        Question question = DTOConverter.convertQuestionDTOToEntity(questionDto);
 
-        // Convert QuestionDto into Question Jpa  Entity
-        Question question = new Question();
-        question.setLesson(questionDto.getLesson());
-        question.setAskerStudentName(questionDto.getAskerStudentName());
-        question.setAskerStudentSurname(questionDto.getAskerStudentSurname());
-        question.setStatus(questionDto.getStatus());
-
-        // Question Jpa Entity
         Question savedQuestion = questionRepository.save(question);
+        question.setStatus(Status.ASKED);
 
-        //Convert saved Question Jpa entity object into QuestionDTO object
-        QuestionDto savedQuestionDto = new QuestionDto();
-        savedQuestionDto.setId(savedQuestion.getId());
-        savedQuestionDto.setLesson(savedQuestion.getLesson());
-        savedQuestionDto.setAskerStudentName(savedQuestion.getAskerStudentName());
-        savedQuestionDto.setAskerStudentSurname(savedQuestion.getAskerStudentSurname());
-        savedQuestionDto.setStatus(savedQuestion.getStatus());
+        return DTOConverter.convertQuestionEntityToDto(savedQuestion);
 
-        return savedQuestionDto;
     }
 
     @Override
-    public QuestionDto listQuestionDetails(Long id) {
+    public QuestionDto listQuestionDetails(Long questionId) {
 
-        Question getQuestion = questionRepository.findById(id).get();
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Question isn't exist with given id : " + questionId));
 
-        QuestionDto getQuestionDto = new QuestionDto();
-        getQuestionDto.setId(getQuestion.getId());
-        getQuestionDto.setLesson(getQuestion.getLesson());
-        getQuestionDto.setAskerStudentName(getQuestion.getAskerStudentName());
-        getQuestionDto.setAskerStudentSurname(getQuestion.getAskerStudentSurname());
-        getQuestionDto.setStatus(getQuestion.getStatus());
-
-        return getQuestionDto;
+        return DTOConverter.convertQuestionEntityToDto(question);
     }
 
     @Override
-    public List<Question> listQuestions() {
+    public List<QuestionDto> listQuestions() {
 
-//        List<Question> questions = questionRepository.findAll();
+        List<Question> questions = questionRepository.findAll();
 
-
-        return (List<Question>) questionRepository.findAll();
+        return questions.stream().map(DTOConverter::convertQuestionEntityToDto)
+              .collect(Collectors.toList());
     }
 
 

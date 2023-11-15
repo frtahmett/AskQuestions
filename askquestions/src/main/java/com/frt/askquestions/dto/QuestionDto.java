@@ -18,4 +18,8 @@ public class QuestionDto {
     private String answeringTeacherSurname;
     private Status status;
 
+    public QuestionDto(Long id, String lesson) {
+        this.id = id;
+        this.lesson = lesson;
+    }
 }

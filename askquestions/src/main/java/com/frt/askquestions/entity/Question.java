@@ -34,4 +34,10 @@ public class Question {
 
     private Status status;
 
+    public Question(Long id, String lesson) {
+        this.id = id;
+        this.lesson = lesson;
+    }
+
+
 }
