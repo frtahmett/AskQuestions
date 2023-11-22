@@ -32,12 +32,7 @@ public class Question {
     @Column(name = "teacher_surname")
     private String answeringTeacherSurname;
 
+    @Column(name = "status")
     private Status status;
-
-    public Question(Long id, String lesson) {
-        this.id = id;
-        this.lesson = lesson;
-    }
-
 
 }

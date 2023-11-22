@@ -14,4 +14,5 @@ public interface QuestionService {
     List<QuestionDto> listQuestions();
 
     QuestionDto answerQuestion(Long questionId, QuestionDto answeredQuestion);
+
 }
