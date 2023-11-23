@@ -22,7 +22,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 
     public QuestionDto askQuestion(QuestionDto questionDto) {
-        Question question = DTOConverter.convertQuestionDtoToEntity(questionDto);
+        Question question = DTOConverter.convertQuestionDTOToEntity(questionDto);
         question.setStatus(Status.ASKED);
 
         Question savedQuestion = questionRepository.save(question);

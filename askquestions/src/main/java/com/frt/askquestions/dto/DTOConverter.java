@@ -16,7 +16,7 @@ public class DTOConverter {
         );
     }
 
-    public static Question convertQuestionDtoToEntity(QuestionDto questionDto) {
+    public static Question convertQuestionDTOToEntity(QuestionDto questionDto) {
         return new Question(
                 questionDto.getId(),
                 questionDto.getLesson(),
